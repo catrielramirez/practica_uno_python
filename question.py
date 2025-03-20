@@ -28,16 +28,17 @@ answers = [
 # Índice de la respuesta correcta para cada pregunta, en el mismo orden que las preguntas 
 correct_answers_index = [1, 2, 0, 3, 1]
 
+# Se agrupan preguntas, respuestas y respuestas correctas en tuplas y se seleccionan 3, con posible repeticion
+questions_to_ask = random.choices(list(zip(questions, answers, correct_answers_index)), k=3)
+
 puntaje = 0
 
  # El usuario deberá contestar 3 preguntas
-for _ in range(3):
-  # Se selecciona una pregunta aleatoria
-  question_index = random.randint(0, len(questions)-1)
+for question, posible_answers, correct_index in questions_to_ask:
   # Se muestra la pregunta y las respuestas posibles
-  print(questions[question_index])
+  print(question)
  
-  for i, answer in enumerate(answers[question_index], start=1):
+  for i, answer in enumerate(posible_answers, start=1):
     print(f"{i}. {answer}")
  
   # El usuario tiene 2 intentos para responder correctamente
@@ -45,7 +46,7 @@ for _ in range(3):
     try:
       user_answer = int(input("Respuesta: "))-1
       # verifica si esta en rango
-      if user_answer < 0 or user_answer >= len(answers[question_index]):
+      if user_answer < 0 or user_answer >= len(posible_answers):
         print("Respuesta no valida")
         sys.exit(1)
     except ValueError:
@@ -53,7 +54,7 @@ for _ in range(3):
       sys.exit(1)
 
     # Se verifica si la respuesta es correcta
-    if user_answer == correct_answers_index[question_index]:
+    if user_answer == correct_index:
       print("¡Correcto!")
       puntaje += 1
       print(f"Tiene {puntaje} puntos")
@@ -68,7 +69,7 @@ for _ in range(3):
     # Si el usuario no responde correctamente después de 2 intentos,
     #      # se muestra la respuesta correcta
     print("Incorrecto. La respuesta correcta es:")
-    print(answers[question_index] [correct_answers_index[question_index]])
+    print(posible_answers[correct_index])
     # Se imprime un blanco al final de la pregunta
     print()
 print("Termino la triada de preguntas!")
